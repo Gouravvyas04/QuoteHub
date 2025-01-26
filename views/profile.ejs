@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+        <div class="flex justify-between items-center w-full mb-5">
+            <h3 class="text-3xl">
+                <span class="font-light">Hello</span>, <%= user.name %> 👋
+            </h3>
+            <a href="/logout" class="bg-red-500 rounded-md px-3 py-2 text-sm">Logout</a>
+        </div>
+
+        <h5 class="mb-5">Create a New Post</h5>
+        <form action="/post" method="post">
+            <textarea
+                class="resize-none bg-transparent border-2 block border-zinc-800 rounded-md w-1/3 p-3 outline-none"
+                name="content" placeholder="What are you thinking about 🤔"></textarea>
+            <input type="submit" class="px-3 py-2 bg-blue-500 block rounded-md mt-2 w-40 cursor-pointer"
+                value="Create New Post">
+        </form>
+
+        <div class="posts mt-20">
+            <h3 class="text-zinc-400 mb-2">Your Posts</h3>
+            <div class="postcontainer">
+                <% user.posts.reverse().forEach(function(post) { %> <!-- Iterating over populated posts -->
+                    <div class="post w-1/3 mb-5 p-4 border-[1px] border-zinc-700 bg-zinc-800">
+                        <h4 class="text-blue-500 mb-2">
+                            <%= post.user.username %> <!-- Display username from the post object -->
+                        </h4>
+                        <p class="text-sm tracking-tight">
+                            <%= post.content %> <!-- Display post content -->
+                        </p>
+                        <small class="mt-2 inline-block">
+                            <%= post.likes.length %> likes
+                        </small>
+                        <div class="btns flex gap-3 mt-2 mb-2">
+                            <% if (post.likes.indexOf(user._id.toString()) !==-1) { %>
+                                <!-- Check if the user liked the post -->
+                                <a href="/like/<%= post._id %>" class="text-red-500">Unlike</a>
+                                <% } else { %>
+                                    <a href="/like/<%= post._id %>" class="text-blue-500">Like</a>
+                                    <% } %>
+                                        <a href="#" class="text-zinc-400">Edit</a>
+                        </div>
+                    </div>
+                    <% }) %> <!-- End of the loop -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
